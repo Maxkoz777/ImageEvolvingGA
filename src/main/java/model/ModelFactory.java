@@ -23,7 +23,7 @@ public class ModelFactory {
 
             }
 
-            for (int j = 0; j < 6; j++) {
+            for (int j = 0; j < 4; j++) {
 
                 genes.add(IntegerGene.of(0, 255));
 

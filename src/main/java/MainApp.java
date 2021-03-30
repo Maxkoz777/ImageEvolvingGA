@@ -1,25 +1,21 @@
+import io.jenetics.Chromosome;
+import io.jenetics.Genotype;
+import io.jenetics.IntegerChromosome;
+import io.jenetics.IntegerGene;
+import model.Colour;
+import model.Triangle;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.ListIterator;
 
 public class MainApp {
 
-    static class Colour {
-        int a;
-        int r;
-        int g;
-        int b;
-
-        public Colour(int a, int r, int g, int b) {
-            this.a = a;
-            this.r = r;
-            this.g = g;
-            this.b = b;
-        }
-
-    }
+    private static final int RANK = 512;
 
     static BufferedImage output;
     static BufferedImage input;
@@ -35,6 +31,67 @@ public class MainApp {
 
     }
 
+    private static int eval(Genotype<IntegerGene> genotype) {
+
+        BufferedImage image = drawPicture(genotype);
+
+        int fitness;
+
+
+
+    }
+
+    private static BufferedImage drawPicture(Genotype<IntegerGene> genotype) {
+
+        Triangle[] triangles = getTrianglesFromGenotype(genotype);
+
+        BufferedImage image = createEmptyImage();
+
+        Graphics graphics = image.getGraphics();
+
+        graphics.clearRect(0, 0, RANK, RANK);
+
+        for (Triangle triangle : triangles) {
+
+            graphics.setColor(triangle.getColor());
+            graphics.drawPolygon(triangle.getArrayX(), triangle.getArrayY(), 3);
+
+        }
+
+        graphics.dispose();
+
+    }
+
+    private static Triangle[] getTrianglesFromGenotype(Genotype<IntegerGene> genotype) {
+
+        Triangle[] triangles = new Triangle[genotype.length()];
+
+        int index = 0;
+
+        for (Chromosome<IntegerGene> chromosome : genotype) {
+
+            ListIterator<IntegerGene> iterator = chromosome.listIterator();
+
+            ArrayList<Integer> list = new ArrayList<>();
+
+            while (iterator.hasNext()) {
+                list.add(iterator.next().intValue());
+            }
+
+            Triangle triangle = new Triangle(new Triangle.Point(list.get(0), list.get(1)),
+                    new Triangle.Point(list.get(2), list.get(3)),
+                    new Triangle.Point(list.get(4), list.get(5)),
+                    new Color(list.get(6), list.get(7), list.get(8), list.get(9))
+            );
+
+            triangles[index++] = triangle;
+
+        }
+
+        return triangles;
+
+    }
+
     public static void main(String[] args) {
 
 
@@ -42,7 +99,7 @@ public class MainApp {
     }
 
     private static BufferedImage createEmptyImage() {
-        return new BufferedImage(512, 512, BufferedImage.TYPE_INT_ARGB);
+        return new BufferedImage(RANK, RANK, BufferedImage.TYPE_INT_ARGB);
     }
 
 
