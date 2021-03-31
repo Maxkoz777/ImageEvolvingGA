@@ -1,8 +1,6 @@
 import io.jenetics.Chromosome;
 import io.jenetics.Genotype;
-import io.jenetics.IntegerChromosome;
 import io.jenetics.IntegerGene;
-import model.Colour;
 import model.Triangle;
 
 import javax.imageio.ImageIO;
@@ -36,7 +34,6 @@ public class MainApp {
         BufferedImage image = drawPicture(genotype);
 
         int fitness;
-
 
 
     }
@@ -95,13 +92,11 @@ public class MainApp {
     public static void main(String[] args) {
 
 
-
     }
 
     private static BufferedImage createEmptyImage() {
         return new BufferedImage(RANK, RANK, BufferedImage.TYPE_INT_ARGB);
     }
-
 
 
 }
