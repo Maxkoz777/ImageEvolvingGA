@@ -15,17 +15,38 @@ public class MainApp {
 
     private static final int RANK = 512;
 
-    static BufferedImage output;
     static BufferedImage input;
+    static Color[][] pixels;
 
     static {
-
-        output = createEmptyImage();
         try {
             input = ImageIO.read(new File("C:\\Users\\DNS\\IdeaProjects\\ImageEvolvingGA\\src\\main\\resources\\sample1.png"));
+
+            pixels = getPixelsFromImage(input);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+    }
+
+    private static Color[][] getPixelsFromImage(BufferedImage image) {
+
+        Color[][] colors = new Color[RANK][RANK];
+
+        for (int y = 0; y < RANK; y++) {
+
+            for (int x = 0; x < RANK; x++) {
+
+                int p = image.getRGB(x, y);
+
+                colors[x][y] = new Color(p, true);
+
+            }
+
+        }
+
+        return colors;
 
     }
 
@@ -33,12 +54,31 @@ public class MainApp {
 
         BufferedImage image = drawPicture(genotype);
 
-        int fitness;
-
-        return 0;
-
+        return difference(getPixelsFromImage(image));
 
     }
+
+    private static int difference(Color[][] matrix) {
+
+        int fitness = 0;
+
+        for (int y = 0; y < RANK; y++) {
+
+            for (int x = 0; x < RANK; x++) {
+
+                fitness += Math.abs(pixels[x][y].getBlue() - matrix[x][y].getBlue());
+                fitness += Math.abs(pixels[x][y].getRed() - matrix[x][y].getRed());
+                fitness += Math.abs(pixels[x][y].getGreen() - matrix[x][y].getGreen());
+                fitness += Math.abs(pixels[x][y].getAlpha() - matrix[x][y].getAlpha());
+
+            }
+
+        }
+
+        return fitness;
+
+    }
+
 
     private static BufferedImage drawPicture(Genotype<IntegerGene> genotype) throws IOException {
 
@@ -67,9 +107,6 @@ public class MainApp {
         ImageIO.write(image, "png", new File("C:\\Users\\DNS\\IdeaProjects\\ImageEvolvingGA\\src\\main\\resources\\output.png"));
 
         graphics.dispose();
-
-
-
 
         return ImageIO.read(new File("C:\\Users\\DNS\\IdeaProjects\\ImageEvolvingGA\\src\\main\\resources\\output.png"));
 
@@ -108,37 +145,6 @@ public class MainApp {
 
     public static void main(String[] args) throws IOException {
 
-        BufferedImage image = createEmptyImage();
-
-        Graphics graphics = image.getGraphics();
-
-        graphics.setColor(Color.WHITE);
-
-        graphics.fillRect(0, 0, RANK, RANK);
-
-        graphics.setColor(new Color(200, 200, 200, 200));
-
-        int[] x = {30, 90, 60};
-        int[] y = {30, 30, 90};
-
-        Polygon polygon = new Polygon(x, y, x.length);
-
-        graphics.drawPolygon(polygon);
-        graphics.fillPolygon(polygon);
-
-        graphics.setColor(new Color(250, 100, 100, 200));
-
-        int[] x1 = {30, 90, 60};
-        int[] y1 = {90, 90, 30};
-
-        Polygon polygon1 = new Polygon(x1, y1, x1.length);
-
-        graphics.drawPolygon(polygon1);
-        graphics.fillPolygon(polygon1);
-
-        ImageIO.write(image, "png", new File("C:\\Users\\DNS\\IdeaProjects\\ImageEvolvingGA\\src\\main\\resources\\output.png"));
-
-        graphics.dispose();
 
 
     }
