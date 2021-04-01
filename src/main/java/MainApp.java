@@ -22,23 +22,25 @@ public class MainApp {
 
         output = createEmptyImage();
         try {
-            input = ImageIO.read(new File("C:\\Users\\DNS\\IdeaProjects\\ImageEvolvingGA\\src\\main\\resources\\sample1.jpeg"));
+            input = ImageIO.read(new File("C:\\Users\\DNS\\IdeaProjects\\ImageEvolvingGA\\src\\main\\resources\\sample1.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
 
-    private static int eval(Genotype<IntegerGene> genotype) {
+    private static int eval(Genotype<IntegerGene> genotype) throws IOException {
 
         BufferedImage image = drawPicture(genotype);
 
         int fitness;
 
+        return 0;
+
 
     }
 
-    private static BufferedImage drawPicture(Genotype<IntegerGene> genotype) {
+    private static BufferedImage drawPicture(Genotype<IntegerGene> genotype) throws IOException {
 
         Triangle[] triangles = getTrianglesFromGenotype(genotype);
 
@@ -46,16 +48,31 @@ public class MainApp {
 
         Graphics graphics = image.getGraphics();
 
-        graphics.clearRect(0, 0, RANK, RANK);
+        graphics.setColor(Color.white);
+
+        graphics.fillRect(0, 0, RANK, RANK);
 
         for (Triangle triangle : triangles) {
 
             graphics.setColor(triangle.getColor());
-            graphics.drawPolygon(triangle.getArrayX(), triangle.getArrayY(), 3);
+
+            Polygon polygon = new Polygon(triangle.getArrayX(), triangle.getArrayY(), 3);
+
+            graphics.drawPolygon(polygon);
+
+            graphics.fillPolygon(polygon);
 
         }
 
+        ImageIO.write(image, "png", new File("C:\\Users\\DNS\\IdeaProjects\\ImageEvolvingGA\\src\\main\\resources\\output.png"));
+
         graphics.dispose();
+
+
+
+
+        return ImageIO.read(new File("C:\\Users\\DNS\\IdeaProjects\\ImageEvolvingGA\\src\\main\\resources\\output.png"));
+
 
     }
 
@@ -89,7 +106,39 @@ public class MainApp {
 
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+
+        BufferedImage image = createEmptyImage();
+
+        Graphics graphics = image.getGraphics();
+
+        graphics.setColor(Color.WHITE);
+
+        graphics.fillRect(0, 0, RANK, RANK);
+
+        graphics.setColor(new Color(200, 200, 200, 200));
+
+        int[] x = {30, 90, 60};
+        int[] y = {30, 30, 90};
+
+        Polygon polygon = new Polygon(x, y, x.length);
+
+        graphics.drawPolygon(polygon);
+        graphics.fillPolygon(polygon);
+
+        graphics.setColor(new Color(250, 100, 100, 200));
+
+        int[] x1 = {30, 90, 60};
+        int[] y1 = {90, 90, 30};
+
+        Polygon polygon1 = new Polygon(x1, y1, x1.length);
+
+        graphics.drawPolygon(polygon1);
+        graphics.fillPolygon(polygon1);
+
+        ImageIO.write(image, "png", new File("C:\\Users\\DNS\\IdeaProjects\\ImageEvolvingGA\\src\\main\\resources\\output.png"));
+
+        graphics.dispose();
 
 
     }
