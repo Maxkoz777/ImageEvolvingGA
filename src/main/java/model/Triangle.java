@@ -26,6 +26,12 @@ public class Triangle {
         this.color = color;
     }
 
+    public Triangle(Point point1, Point point2, Point point3) {
+        this.point1 = point1;
+        this.point2 = point2;
+        this.point3 = point3;
+    }
+
     public int[] getArrayX() {
         return new int[]{point1.x, point2.x, point3.x};
     }

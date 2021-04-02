@@ -23,13 +23,17 @@ public class ModelFactory {
 
             }
 
+            chromosomes.add(IntegerChromosome.of(genes));
+
+            ArrayList<IntegerGene> colorGenes = new ArrayList<>();
+
             for (int j = 0; j < 4; j++) {
 
-                genes.add(IntegerGene.of(0, 255));
+                colorGenes.add(IntegerGene.of(0, 255));
 
             }
 
-            chromosomes.add(IntegerChromosome.of(genes));
+            chromosomes.add(IntegerChromosome.of(colorGenes));
 
         }
 
